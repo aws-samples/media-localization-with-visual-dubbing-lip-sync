@@ -1,2 +1,2 @@
 tortoise-tts==3.0.0
-deepspeed==0.15.0
+deepspeed==0.15.1
