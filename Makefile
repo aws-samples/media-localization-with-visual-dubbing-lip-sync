@@ -10,6 +10,10 @@ download:
 	src/scripts/install_ffmpeg.sh && \
 	src/scripts/install_retalking.sh
 
+bootstrap:
+	# Bootstrap cdk
+	cd ./src && \
+	cdk bootstrap
 
 build:
 	# Build container
@@ -27,7 +31,7 @@ deploy:
 	source .venv/bin/activate && \
 	cd src && \
 	cdk deploy --require-approval=never SageMakerSupportingInfraStack && \
-	python scripts/upload_models.py && \			
+	python scripts/upload_models.py && \
 	python scripts/upload_retalking_image.py && \
 	cdk deploy --require-approval=never SageMakerEndpointsStack && \
 	cdk deploy --require-approval=never VisualDubbingLipsyncCdkStack
