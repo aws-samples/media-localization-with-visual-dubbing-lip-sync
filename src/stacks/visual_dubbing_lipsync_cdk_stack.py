@@ -58,7 +58,7 @@ class VisualDubbingLipsyncPipelineStack(Stack):
                     statements=[
                         iam.PolicyStatement(
                             actions=[
-                                "sagemaker:InvokeEndpoint"
+                                "sagemaker:InvokeEndpointAsync"
                             ],
                             resources=["*"]
                         )

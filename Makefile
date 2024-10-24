@@ -2,13 +2,14 @@
 
 download:
 	# Download models and binaries
+	src/scripts/install_ffmpeg.sh && \
+	src/scripts/install_retalking.sh && \
 	python ./src/scripts/download_models.py && \
 	source .venv/bin/activate && \
 	pip install pydub -t ./src/layers/pydub/python/lib/python3.12/site-packages/ && \
 	pip install ffmpeg -t ./src/layers/ffmpeg/python/lib/python3.12/site-packages/ && \
-	pip install requests -t ./src/layers/requests/python/lib/python3.12/site-packages/ && \
-	src/scripts/install_ffmpeg.sh && \
-	src/scripts/install_retalking.sh
+	pip install requests -t ./src/layers/requests/python/lib/python3.12/site-packages/
+
 
 bootstrap:
 	# Bootstrap cdk
