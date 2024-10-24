@@ -19,11 +19,12 @@ You will need to have the following prerequisites:
     * Amazon SageMaker
     * AWS Lambda
     * Amazon Step Functions
+* AWS CLI installed and configured with a region
 * Service Quota set to at least 2 for "Amazon SageMaker/ml.g5.xlarge for endpoint usage"
 * MacOS or Linux (Note: this repo is not tested on Windows)
 * Python 3.11 or later
 * Virtualenv
-* Docker
+* Docker (You must be part of the docker group to use docker as part of the build process)
 * At least 60 GiB of local free space
 * JupyterLab
 * ffmpeg
@@ -38,7 +39,7 @@ For deploying the solution using CDK,
 ## Deployment
 
 __Prerequisites__
-Create your virtual environment and install packages
+Create your virtual environment in the root of the repo and install packages
 ```
 python -m venv .venv
 source .venv/bin/activate
