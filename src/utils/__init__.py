@@ -8,7 +8,7 @@ Description:
 
 
 import os
-import urllib.request
+import requests
 import zipfile
 import tarfile
 
@@ -160,7 +160,12 @@ def download_models(tts_dir,
             print(f"Skipping {file_name} - already exists.")
         else:
             print(f"Downloading {file_name}...")
-            urllib.request.urlretrieve(url, destination)
+
+            response = requests.get(url, stream=True)
+            response.raise_for_status()
+            with open(destination, 'wb') as file:
+                for chunk in response.iter_content(chunk_size=8192):
+                    file.write(chunk)
 
     # Unzip BFM.zip
     bfm_zip_path = os.path.join(retalking_checkpoints_dir, "BFM.zip")

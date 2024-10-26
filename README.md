@@ -11,34 +11,41 @@ and then lip synced to the original video.
 ## Prerequisites
 
 You will need to have the following prerequisites:
-* An AWS account with Identity and Access Management Permissions (IAM) for:
+* An AWS account with Identity and Access Management Permissions (IAM) role:
+    * AWS CloudFormation
     * Amazon Transcribe
     * Amazon Translate
     * Amazon S3
     * Amazon SageMaker
     * AWS Lambda
     * Amazon Step Functions
+* AWS CLI installed and configured with a region
 * Service Quota set to at least 2 for "Amazon SageMaker/ml.g5.xlarge for endpoint usage"
 * MacOS or Linux (Note: this repo is not tested on Windows)
 * Python 3.11 or later
-* Docker
 * Virtualenv
+* Docker (You must be part of the docker group to use docker as part of the build process)
 * At least 60 GiB of local free space
 * JupyterLab
 * ffmpeg
 * make
+* git
+* wget
+* Node.js 16 or later
 
 For deploying the solution using CDK, 
 * Amazon CDKv2 See https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html
 
-Create your virtual environment and install packages
+## Deployment
+
+__Prerequisites__
+Create your virtual environment in the root of the repo and install packages
 ```
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Deployment
 There are two ways to deploy this solution:
 
 1) Jupyter Notebooks. Follow the following notebooks
@@ -53,18 +60,16 @@ There are two ways to deploy this solution:
 Using the CDK code provided allows you to deploy a fully automated solution end-to-end using
 Step Functions and SageMaker endpoints including the TTS and retalking endpoints.
 
-1. If you have not bootstrapped CDK yet, bootstrap it
-
-```
-cd src
-cdk bootstrap
-```
-
-Run the following in the directory where the Makefile is:
-2. Download the models
+1. Download the models
 
 ```
 make download
+```
+
+2. If you have not bootstrapped CDK yet, bootstrap it
+
+```
+make bootstrap
 ```
 
 3. Build the video retalking container
@@ -96,7 +101,6 @@ Thanks to the following, this solution was made possible:
 
 Tortoise-TTS - https://github.com/neonbjb/tortoise-tts
 VideoReTalking - https://github.com/OpenTalker/video-retalking
-
 
 ## Security
 
