@@ -1,0 +1,42 @@
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG TZ=UTC
+ARG MINICONDA_VERSION=23.1.0-1
+ARG PYTHON_VERSION=3.9.13
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN apt-get update
+RUN apt install -y curl wget git ffmpeg
+RUN adduser --disabled-password --gecos '' --shell /bin/bash user
+USER user
+ENV HOME=/home/user
+WORKDIR $HOME
+RUN mkdir $HOME/.cache $HOME/.config && chmod -R 777 $HOME
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-py39_$MINICONDA_VERSION-Linux-x86_64.sh
+RUN chmod +x Miniconda3-py39_$MINICONDA_VERSION-Linux-x86_64.sh
+RUN ./Miniconda3-py39_$MINICONDA_VERSION-Linux-x86_64.sh -b -p /home/user/miniconda
+ENV PATH="$HOME/miniconda/bin:$PATH"
+RUN conda init
+RUN conda install python=$PYTHON_VERSION
+RUN python3 -m pip install --upgrade pip
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+USER root
+RUN git clone https://github.com/JarodMica/ai-voice-cloning /opt/ml/code
+WORKDIR /opt/ml/code
+#WORKDIR $HOME/ai-voice-cloning
+#COPY --chown=user:user modules modules
+RUN git submodule init && git submodule update --remote
+RUN python3 -m pip install -r ./modules/tortoise-tts/requirements.txt # install TorToiSe requirements
+RUN python3 -m pip install -e ./modules/tortoise-tts/ # install TorToiSe
+RUN python3 -m pip install -r ./modules/dlas/requirements.txt # instal DLAS requirements, last, because whisperx will break a dependency here
+RUN python3 -m pip install -e ./modules/dlas/ # install DLAS
+RUN python3 -m pip install -r ./requirements.txt # install local requirements
+COPY sm-load.py /opt/ml/code
+COPY utils.py /opt/ml/code/src
+COPY train.py /opt/ml/code/
+RUN python3 sm-load.py
+RUN pip3 install sagemaker-training
+# define train.py as the script entry point
+ENV SAGEMAKER_PROGRAM train.py
