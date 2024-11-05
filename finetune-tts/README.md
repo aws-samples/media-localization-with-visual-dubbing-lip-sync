@@ -26,13 +26,13 @@ cd finetune-tts
 
 1. Prepare training dataset - The training data consists of wav files and the corresponding transcriptions. The wav/transcription pair makes a single entry for the training data. As a general rule, more data used for training the model yields better results. Additionally, data quality matters, that means only feed high quality audios with clear recordings. Feeding around 10-14 hours of audio/transcription samples would yield really good results. This is especially true for training the model with a new language. Additionally, you may need to preprocess the audio files to match the required sample rate (typically 22050 Hz for Tortoise TTS). 
 
-2. Create a Training Data file - The training dataset follows the structure of [LJ-Speech](https://keithito.com/LJ-Speech-Dataset/) dataset format. An example row of a data file looks like this:
+2. Create a Training Data file - The training dataset follows the structure of [LJ-Speech](https://keithito.com/LJ-Speech-Dataset/) dataset format. An example row of a data file looks like the following:
    
    ```
    audio/1_00006.wav| Then, on the other hand, it's a romantic drama.
    ```
 
-   You can name the file train.txt.
+   You can name the file `train.txt`.
 
 3. (Optional) Create a validation dataset for testing the performance of the model. While not required, validation dataset is useful to evaluate the performance of the model based on training/validation loss. 
    
@@ -66,7 +66,7 @@ cd finetune-tts
 
 *Note*: Replace the *voice* value with a unique name for the model. 
    
-9. Upload **audio files (wav or mp3), train.txt, validation.txt (optional), train.yaml and train.json** to a S3 bucket input location. The the audio files in S3 should be relative to the audio file path for train.txt. For example, if the location of the audio wav file in the train.txt file has `audio/0001.wav`, then your 0001.wav file should be located in the `/audio` folder. Here's a complete folder structure on S3 for all the files:
+9. Upload **audio files (wav or mp3), train.txt, validation.txt (optional), train.yaml and train.json** to a S3 bucket input location. The the audio files in S3 should be relative to the audio file path for train.txt. For example, if the location of the audio wav file in the train.txt file has `audio/0001.wav`, then your 0001.wav file should be located in the `/audio` folder. Here's a complete folder structure on S3 with all the required files:
 
 ```
 |-train.txt
