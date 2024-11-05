@@ -1,4 +1,4 @@
-## Finetune Tortoise TTS to any language
+## Finetune a Tortoise TTS Model
 This page contains the instructions for finetuning the state of the art open source TTS model called Tortoise TTS on [Amazon SageMaker](https://aws.amazon.com/pm/sagemaker).
 
 Tortoise is a text-to-speech program built with the following priorities:
