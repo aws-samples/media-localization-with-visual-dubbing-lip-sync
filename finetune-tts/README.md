@@ -24,9 +24,9 @@ git clone https://github.com/aws-samples/media-localization-with-visual-dubbing-
 cd finetune-tts
 ```   
 
-4. Prepare training dataset - The training data consists of wav file and the corresponding transcription. The pair makes a single entry to training the model. The more data you feed into the model the better the results will be. As a rule of thumb, quality matters. Only feed high quality audios with clear recordings. Feeding around 10-14 hours of audio/transcription samples would yield really good results. This is especially true for training the model with a new language. Additionally, you may need to preprocess the audio files to match the required sample rate (typically 22050 Hz for Tortoise TTS). 
+1. Prepare training dataset - The training data consists of wav files and the corresponding transcriptions. The wav/transcription pair makes a single entry for the training data. As a general rule, more data used for training the model yields better results. Additionally, data quality matters, that means only feed high quality audios with clear recordings. Feeding around 10-14 hours of audio/transcription samples would yield really good results. This is especially true for training the model with a new language. Additionally, you may need to preprocess the audio files to match the required sample rate (typically 22050 Hz for Tortoise TTS). 
 
-5. Create a Training Data file - The training dataset follows the structure of [LJ-Speech](https://keithito.com/LJ-Speech-Dataset/) dataset format. An example row of a data file looks like this:
+2. Create a Training Data file - The training dataset follows the structure of [LJ-Speech](https://keithito.com/LJ-Speech-Dataset/) dataset format. An example row of a data file looks like this:
    
    ```
    audio/1_00006.wav| Then, on the other hand, it's a romantic drama.
@@ -34,11 +34,11 @@ cd finetune-tts
 
    You can name the file train.txt.
 
-6. (Optional) Create a validation dataset for testing the performance of the model. While not required, validation dataset is useful to evaluate the performance of the model based on training/validation loss. 
+3. (Optional) Create a validation dataset for testing the performance of the model. While not required, validation dataset is useful to evaluate the performance of the model based on training/validation loss. 
    
-7. Use the given training configuration yaml file in [samples/train.yaml](samples/train.yaml) as the yaml file for the training job. You probably do not need to make any changes to this file unless you are changing the base models/tokenizers.
+4. Use the given training configuration yaml file in [samples/train.yaml](samples/train.yaml) as the yaml file for the training job. You probably do not need to make any changes to this file unless you are changing the base models/tokenizers.
    
-8.  Create a `train.json` file to be used as the model hyperparameters. Here're an example of tunable parameters:
+5.  Create a `train.json` file to be used as the model hyperparameters. Here're an example of tunable parameters:
 
 ```json
 {
@@ -124,5 +124,3 @@ The training job writes the evaluation metrics for every epoch in Cloudwatch log
     "iteration_rate": 12.116708517074585
 }
 ```
-
-
