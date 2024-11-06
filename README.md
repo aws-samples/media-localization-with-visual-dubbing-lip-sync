@@ -96,6 +96,9 @@ make destroy
 ```
 8. Clean up docker. Delete the image and build cache.
 
+### Finetune your own Tortoise TTS Model
+It's possible to finetune tortoise TTS model using your own data. Please follow the instruction [here](finetune-tts/README.md) on how to do that with SageMaker.
+
 ### Credits
 Thanks to the following, this solution was made possible:
 
