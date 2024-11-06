@@ -103,6 +103,7 @@ It's possible to finetune tortoise TTS model using your own data. Please follow 
 Thanks to the following, this solution was made possible:
 
 Tortoise-TTS - https://github.com/neonbjb/tortoise-tts
+
 VideoReTalking - https://github.com/OpenTalker/video-retalking
 
 ## Security
