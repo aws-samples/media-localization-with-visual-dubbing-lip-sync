@@ -97,7 +97,45 @@ make destroy
 8. Clean up docker. Delete the image and build cache.
 
 ### Finetune your own Tortoise TTS Model
-It's possible to finetune tortoise TTS model using your own data. Please follow the instruction [here](finetune-tts/README.md) on how to do that with SageMaker.
+1. It's possible to finetune tortoise TTS model using your own data. Please follow the instruction [here](finetune-tts/README.md) on how to do that with SageMaker.
+
+2. Once you have a fine-tuned model using the instructions in Step 1,
+download the model.tar.gz file and extract it to get the autoregressive.pth 
+file. 
+
+3. If you have not done so already, run the download step
+```
+make download
+```
+
+4. As part of the download step, it creates ./src/tts/model folder.
+Create a subdirectory within that folder, and place the autoregressive.pth file
+in there. e.g., ./src/tts/model/speaker_a/autoregressive.pth.
+
+5. Modify the .src/tts/code/inference.py script lines 54 to 65
+so that it refers to the correct subdirectory and file. 
+
+For example,
+```
+if model_id == "speaker_a":
+    model_path = os.path.join(MODEL_DIR, 'speaker_a/autoregressive.pth')
+```
+
+6. Continue following the steps to deploy the CDK pipeline.
+
+7. To use the custom model, specify the "model_id" key as part of the job file.
+
+If using the step-by-step notebook,
+refer to _2 - Dubbing Pipeline.ipynb - Preparing Payloads_
+
+or
+
+If using the CDK pipeline,
+refer to _3 - Dubbing Pipeline with CDK.ipynb - Create the job file_
+
+The inference script will dynamically load the fine-tune model. 
+If you don't specify a model_id, it will be use the default
+English speaker model.
 
 ### Credits
 Thanks to the following, this solution was made possible:
