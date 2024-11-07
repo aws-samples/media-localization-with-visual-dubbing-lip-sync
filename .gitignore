@@ -192,3 +192,5 @@ blog/src/retalking/archive
 blog/src/retalking/code/checkpoints
 blog/src/tts/archive
 blog/src/tts/model
+
+.idea
