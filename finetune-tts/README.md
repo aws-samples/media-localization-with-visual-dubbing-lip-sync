@@ -32,13 +32,11 @@ cd finetune-tts
    audio/1_00006.wav| Then, on the other hand, it's a romantic drama.
    ```
 
-   You can name the file `train.txt`.
+   You can name the file `train.txt`. We'll need this file later for training and configuration file generation purposes.
 
-3. (Optional) Create a validation dataset for testing the performance of the model. While not required, validation dataset is useful to evaluate the performance of the model based on training/validation loss. 
+3. (Optional) Create a validation dataset for testing the performance of the model. While not required, validation dataset is useful to evaluate the performance of the model based on training/validation loss. If you have validation dataset, name the file `validation.txt`.
    
-4. Use the given training configuration yaml file in [samples/train.yaml](samples/train.yaml) as the yaml file for the training job. You probably do not need to make any changes to this file unless you are changing the base models/tokenizers.
-   
-5.  Create a `train.json` file to be used as the model hyperparameters. Here're an example of tunable parameters:
+4.  Create a file called `train.json` that will be used as the model hyperparameters. Here're an example of hyperparameters supported by the model:
 
 ```json
 {
@@ -47,8 +45,6 @@ cd finetune-tts
         "mel_lr_weight": 1,
         "text_lr_weight": 0.01,
         "learning_rate_scheme": "Multistep",
-        "learning_rate_schedule": "",
-        "learning_rate_restarts": 4,
         "batch_size": 128,
         "gradient_accumulation_size": 16,
         "save_rate": 5,
@@ -59,14 +55,21 @@ cd finetune-tts
         "workers": 2,
         "gpus": 1,
         "source_model": "./models/tortoise/autoregressive.pth",
-        "resume_state": "",
         "voice": "[a unique name for the voice]"
 }
 ```
 
-*Note*: Replace the *voice* value with a unique name for the model. 
+*Note:* `epochs`, `learning_rate` and `batch_size` are the only required parameters. There are default values for the optional parameters. Do play around with the parameters if you the model did not yield the desired accuracy. 
+
+5. In a CLI terminal, run the following command:
+```bash
+python create_training_yaml.py --hyperparam_json train.json --train_txt train.txt 
+```
+
+The above command should generate a train.yaml file in the current directory. You'll need to use this file for finetuning the model.
    
-9. Upload **audio files (wav or mp3), train.txt, validation.txt (optional), train.yaml and train.json** to a S3 bucket input location. The the audio files in S3 should be relative to the audio file path for train.txt. For example, if the location of the audio wav file in the train.txt file has `audio/0001.wav`, then your 0001.wav file should be located in the `/audio` folder. Here's a complete folder structure on S3 with all the required files:
+
+6. *Important* - Upload **audio files (wav or mp3), train.txt, validation.txt (optional), train.yaml** to a S3 bucket input location. The the audio files in S3 should be relative to the audio file path for train.txt. For example, if the location of the audio wav file in the train.txt file has `audio/0001.wav`, then your 0001.wav file should be located in the `/audio` folder. Here's a complete folder structure on S3 with all the required files:
 
 ```
 |-train.txt
