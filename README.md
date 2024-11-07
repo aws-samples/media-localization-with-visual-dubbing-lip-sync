@@ -100,8 +100,7 @@ make destroy
 1. It's possible to finetune tortoise TTS model using your own data. Please follow the instruction [here](finetune-tts/README.md) on how to do that with SageMaker.
 
 2. Once you have a fine-tuned model using the instructions in Step 1,
-download the model.tar.gz file and extract it to get the autoregressive.pth 
-file. 
+download the `model.tar.gz` file from S3 output location in the training job in the previous step, and extract it locally to get the autoregressive.pth file. 
 
 3. If you have not done so already, run the download step
 ```
