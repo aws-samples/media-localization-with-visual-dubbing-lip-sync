@@ -74,7 +74,6 @@ The above command should generate a `train.yaml` file in the current directory. 
 ```
 |-train.txt
 |-validation.txt
-|-train.json
 |-train.yaml
 |-|
   |-audio
