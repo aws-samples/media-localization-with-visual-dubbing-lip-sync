@@ -111,26 +111,45 @@ make download
 Create a subdirectory within that folder, and place the autoregressive.pth file
 in there. e.g., ./src/tts/model/speaker_a/autoregressive.pth.
 
-5. Modify the .src/tts/code/inference.py script lines 54 to 65
-so that it refers to the correct subdirectory and file. 
-
-For example,
-```
-if model_id == "speaker_a":
-    model_path = os.path.join(MODEL_DIR, 'speaker_a/autoregressive.pth')
-```
-
-6. Continue following the steps to deploy the CDK pipeline.
-
-7. To use the custom model, specify the "model_id" key as part of the job file.
+1. To use the custom model, you need to provide a "model_id". The model_id must be unique and cannot have any spaces. An example of model_id could be: `speaker_a`. Follow the steps below to make the modifications:
 
 If using the step-by-step notebook,
-refer to _2 - Dubbing Pipeline.ipynb - Preparing Payloads_
+refer to [2 - Dubbing Pipeline.ipynb](notebooks/2%20-%20Dubbing%20Pipeline.ipynb), replace 'model_id' with the `model_id` that you decided on. 
 
-or
+```python
+payload = { 
+            "id": i,
+            "text": translated_sentence, 
+            "voice_samples_s3_uri": f"s3://{bucket}/{prefix_voice_samples}/{s3_reference_voice_folder}",
+            "input_s3_uri": f"s3://{bucket}/{prefix_inputs}/{inference_id}/{inference_id}-part-{i}.json",
+            "destination_s3_uri": f"s3://{bucket}/{prefix_outputs}/{inference_id}/{i}.wav", 
+            "model_id": '[your model_id]',  # Used for fine-tune model use
+            "inference_params": {}
+          } 
+```
+
+OR
 
 If using the CDK pipeline,
-refer to _3 - Dubbing Pipeline with CDK.ipynb - Create the job file_
+refer to [3 - Dubbing Pipeline with CDK.ipynb](notebooks/3%20-%20Dubbing%20Pipeline%20with%20CDK.ipynb), replace 'model_id' with the `model_id` that you decided on:
+
+```python
+job = {
+    "bucket": bucket,
+    "prefix_inputs": "inputs",
+    "prefix_outputs": "outputs",
+    "job_name": job_name,
+    "transcribe_source_language_code": transcribe_source_language_code,
+    "media_format": "mp4",
+    "translate_source_language_code": translate_source_language_code,
+    "translate_target_language_code": translate_target_language_code,
+    "tts_endpoint_name": stacks_output_dict['SageMakerTTSEndpointOutput'],
+    "model_id": '[your model_id]', # Used for fine-tuned models
+    "retalking_endpoint_name": stacks_output_dict['SageMakerRetalkingEndpointOutput'],
+    "source_file_s3_uri": f"s3://{bucket}/{input_video_key}",
+    "destination_s3_uri": f"s3://{bucket}/{output_video_key}"
+}
+```
 
 The inference script will dynamically load the fine-tune model. 
 If you don't specify a model_id, it will be use the default

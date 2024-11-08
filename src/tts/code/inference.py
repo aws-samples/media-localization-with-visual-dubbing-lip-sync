@@ -51,18 +51,7 @@ def load_autogressive_model(model, model_id):
     logger.info("Loading model weights")
 
     # Load the model weights
-    if model_id == 'female_english':
-        logger.info("Loading female english model")
-        model_path = os.path.join(MODEL_DIR, 'female_english/autoregressive.pth')
-    elif model_id == 'male_german':
-        logger.info("Loading male german model")
-        model_path = os.path.join(MODEL_DIR, 'male_german/autoregressive.pth')
-    elif model_id == 'male_spanish':
-        logger.info("Loading male spanish model")
-        model_path = os.path.join(MODEL_DIR, 'male_spanish/autoregressive.pth')
-    elif model_id == 'male_japanese':
-        logger.info("Loading male japanese model")
-        model_path = os.path.join(MODEL_DIR, 'male_japanese/autoregressive.pth')
+    model_path = os.path.join(MODEL_DIR, f'{model_id}/autoregressive.pth')
     
     model.autoregressive = UnifiedVoice(max_mel_tokens=604, max_text_tokens=402, max_conditioning_inputs=2, layers=30,
                                           model_dim=1024,
